@@ -1,12 +1,16 @@
-require('dotenv').config();
+require('dotenv').config();  // para traer del .env se instala con npm.
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 const {
-  DB_USER, DB_PASSWORD, DB_HOST,
+  DB_USER, DB_PASSWORD, DB_HOST,DB_PORT,
 } = process.env;
+//console.log('esto es process.env',process.env) // remove this after you've confirmed it is working
+//console.log('esto es DB_USER:',DB_USER) // remove this after you've confirmed it is working
 
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/pokemon`, {
+
+// const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname') // Example for postgres
+const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/pokemon`, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
@@ -30,12 +34,15 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Pokemon } = sequelize.models;
 
+const { Pokemon, Type } = sequelize.models; // lo destructuro para poder hacer uso de la relacion
 // Aca vendrian las relaciones
-// Product.hasMany(Reviews);
+// el segundo argumento es opcional y sirve para nombrar a la join table (C)
+Pokemon.belongsToMany(Type, { through : 'pokemon-types'});
+Type.belongsToMany(Pokemon, { through : 'pokemon-types'});
+
 
 module.exports = {
-  ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
-  conn: sequelize,     // para importart la conexión { conn } = require('./db.js');
+  ...sequelize.models, // del otro lado para poder importar los modelos así: const { Product, User } = require('./db.js');
+  conn: sequelize,     // para importarte la conexión { conn } = require('./db.js'); la usamos en index.js
 };

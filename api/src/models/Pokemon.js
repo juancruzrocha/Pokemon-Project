@@ -3,7 +3,13 @@ const { DataTypes } = require("sequelize");
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
   // defino el modelo
-  sequelize.define("pokemon", {
+  sequelize.define("Pokemon", {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4, //Si no le paso nada pues se genera solo (C)
+      primaryKey: true,
+      allowNull: false,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -15,34 +21,38 @@ module.exports = (sequelize) => {
     },
     attack: {
       type: DataTypes.INTEGER,
+      allowNull: false,
     },
     defense: {
       type: DataTypes.INTEGER,
+      allowNull: false,
     },
     speed: {
       type: DataTypes.INTEGER,
+      allowNull: false,
     },
     height: {
       type: DataTypes.INTEGER,
+      allowNull: false,
     },
     weight: {
       type: DataTypes.INTEGER,
-    },
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4, //Si no le paso nada pues se genera solo
-      primaryKey: true,
-      // autoIncrement: true,
+      allowNull: false,
     },
     img: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
+    createdInDb: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue : true,
+    }
   },
   {
-    freezeTableName: true 
-      //esto hace que la table se cree con el nombre que le dimos y no con un plural
+    timestamps: false, //para sacar la hora de creacion/modificiacion de la tabla
   });
 
-  sequelize.define('type', { name: DataTypes.STRING });
+ 
 
 };
