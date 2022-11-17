@@ -3,7 +3,7 @@ const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 const {
-  DB_USER, DB_PASSWORD, DB_HOST,DB_PORT,
+  DB_USER, DB_PASSWORD, DB_HOST,DB_PORT, 
 } = process.env;
 //console.log('esto es process.env',process.env) // remove this after you've confirmed it is working
 //console.log('esto es DB_USER:',DB_USER) // remove this after you've confirmed it is working
